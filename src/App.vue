@@ -1,8 +1,5 @@
 <template>
   <div class="phone">
-    <div class="backend-pill" :class="backendStatus">
-      {{ backendLabel }}
-    </div>
     <GetStarted v-if="store.screen === 'start'" @get-started="goTo('auth')" />
     <AuthScreen v-else-if="store.screen === 'auth'" @authenticated="handleAuthenticated" />
     <HomeScreen v-else-if="store.screen === 'home'" />
@@ -16,10 +13,9 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './firebase.js'
-import { checkBackendHealth } from './services/api.js'
 import GetStarted from './components/GetStarted.vue'
 import AuthScreen from './services/AuthScreen.vue'
 import HomeScreen from './views/HomeScreen.vue'
@@ -30,13 +26,6 @@ import MealDetailScreen from './views/MealDetailScreen.vue'
 import ProfileScreen from './views/ProfileScreen.vue'
 import ModalHost from './views/ModalHost.vue'
 import { store, goTo, loadData } from './store.js'
-
-const backendStatus = ref('checking')
-const backendLabel = computed(() => {
-  if (backendStatus.value === 'connected') return 'API connected'
-  if (backendStatus.value === 'error') return 'API offline'
-  return 'API checking'
-})
 
 async function handleAuthenticated(user) {
   store.user.name = user.name
@@ -50,15 +39,6 @@ async function handleAuthenticated(user) {
 }
 
 onMounted(() => {
-  checkBackendHealth()
-    .then(() => {
-      backendStatus.value = 'connected'
-    })
-    .catch((e) => {
-      backendStatus.value = 'error'
-      console.error('Could not reach backend API:', e)
-    })
-
   onAuthStateChanged(auth, async (fbUser) => {
     if (fbUser && store.screen === 'start') {
       store.user.email = fbUser.email
