@@ -24,7 +24,6 @@ body {
   padding: 24px 8px;
 }
 
-/* Phone frame shell that every screen renders inside */
 .phone {
   width: 375px;
   min-height: 720px;
@@ -38,7 +37,6 @@ body {
   flex-direction: column;
 }
 
-/* Base layout every screen component uses */
 .screen {
   display: flex;
   flex-direction: column;
@@ -48,7 +46,6 @@ body {
   position: relative;
 }
 
-/* Logo + brand, reused on the landing and auth screens */
 .logo-wrap { text-align: center; margin-top: 40px; }
 .logo-circle {
   width: 56px;
@@ -76,7 +73,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Shared button styles used across every screen */
 .btn {
   border: none;
   border-radius: 8px;
@@ -95,7 +91,6 @@ body {
   border: 1px solid var(--border);
 }
 
-/* Input fields, used by the auth screen and future forms/modals */
 .field {
   background: var(--card);
   border: 1px solid var(--border);
@@ -116,7 +111,6 @@ body {
 }
 .field svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--muted); }
 
-/* Tab switcher, used by the auth screen's Log In / Register toggle */
 .tabs {
   display: flex;
   background: var(--card);
@@ -136,7 +130,6 @@ body {
 }
 .tab.active { background: var(--card-2); color: var(--text); }
 
-/* Bottom navigation bar, shared by Home/Plans/Meals/Profile */
 .bottom-nav {
   display: flex;
   justify-content: space-around;
@@ -162,7 +155,6 @@ body {
 .nav-item svg { width: 19px; height: 19px; }
 .nav-item.active { color: var(--red); }
 
-/* Small uppercase section headers used on Home/Plans/Meals */
 .section-label {
   font-size: 11px;
   color: var(--muted);
@@ -172,7 +164,6 @@ body {
   text-transform: uppercase;
 }
 
-/* Empty-state placeholder text */
 .empty-note {
   color: var(--muted);
   font-size: 12px;
@@ -305,7 +296,6 @@ select.field-select {
   width: 110px;
 }
 
-/* Modal overlay, shared by every Add/Edit form */
 .modal-overlay {
   position: absolute;
   inset: 0;
@@ -340,7 +330,6 @@ select.field-select {
   width: 100%;
 }
 
-/* Profile screen */
 .profile-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .avatar {
   width: 46px;
@@ -373,7 +362,6 @@ select.field-select {
 }
 .logout-row { color: var(--red); font-weight: 700; cursor: pointer; padding-top: 14px; font-size: 13px; }
 
-/* Stat boxes, used by Home (routines/streak) and Profile (stats summary) */
 .stat-row {
   display: flex;
   gap: 10px;
