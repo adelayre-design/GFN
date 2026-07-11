@@ -15,10 +15,6 @@
         <div class="stat-lbl">Workouts<br />Finished</div>
       </div>
       <div class="stat-box">
-        <div class="stat-num">{{ store.dayStreak }}</div>
-        <div class="stat-lbl">Day<br />Streak</div>
-      </div>
-      <div class="stat-box">
         <div class="stat-num">{{ totalCaloriesLogged }}</div>
         <div class="stat-lbl">Calories<br />Logged</div>
       </div>
@@ -60,12 +56,6 @@
 
     <div class="section-label profile-settings-label">Settings</div>
     <div class="settings-row" @click="goTo('changePass')"><span>Change password</span><span class="chev">›</span></div>
-    <div class="settings-row">
-      <span>Notifications</span>
-      <div class="toggle" :class="{ on: store.notif }" @click="toggleNotif">
-        <div class="knob"></div>
-      </div>
-    </div>
 
     <div class="logout-row" @click="logout()">Log Out</div>
     <div class="spacer"></div>
@@ -83,11 +73,6 @@ const isEditingStats = ref(!store.user.age)
 
 function confirmStats() {
   isEditingStats.value = false
-  saveData()
-}
-
-function toggleNotif() {
-  store.notif = !store.notif
   saveData()
 }
 
@@ -119,5 +104,9 @@ const totalCaloriesLogged = computed(() =>
   margin-bottom: 12px;
   padding: 9px 0;
   font-size: 12px;
+}
+
+.logout-row {
+  margin-bottom: 10px;
 }
 </style>

@@ -1,13 +1,18 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { goTo } from '../store.js'
+import { auth } from '../firebase.js'
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth'
 
+const currentPassword = ref('')
 const newPassword = ref('')
 const repeatPassword = ref('')
+const showCurrent = ref(false)
 const showNew = ref(false)
 const showRepeat = ref(false)
 const error = ref('')
 const success = ref(false)
+const loading = ref(false)
 
 const digitCount = computed(() => (newPassword.value.match(/\d/g) || []).length)
 
@@ -38,8 +43,14 @@ function generatePassword() {
     showRepeat.value = true
 }
 
-function handleConfirm() {
+async function handleConfirm() {
     error.value = ''
+    success.value = false
+
+    if (!currentPassword.value) {
+        error.value = 'Please enter your current password.'
+        return
+    }
     if (newPassword.value.length < 8 || digitCount.value < 2) {
         error.value = 'Password must be at least 8 characters and include at least 2 numbers.'
         return
@@ -49,9 +60,36 @@ function handleConfirm() {
         return
     }
 
-    // TODO: hook up to your auth change-password call (e.g. Firebase updatePassword)
-    success.value = true
-    setTimeout(() => goTo('profile'), 900)
+    const currentUser = auth.currentUser
+    if (!currentUser) {
+        error.value = 'You need to be signed in to change your password.'
+        return
+    }
+
+    loading.value = true
+    try {
+        // Firebase requires a recent login before letting you change the password,
+        // so we reauthenticate with the current password first.
+        const credential = EmailAuthProvider.credential(currentUser.email, currentPassword.value)
+        await reauthenticateWithCredential(currentUser, credential)
+
+        await updatePassword(currentUser, newPassword.value)
+        success.value = true
+        setTimeout(() => goTo('profile'), 900)
+    } catch (e) {
+        if (e?.code === 'auth/wrong-password' || e?.code === 'auth/invalid-credential') {
+            error.value = 'Your current password is incorrect.'
+        } else if (e?.code === 'auth/requires-recent-login') {
+            error.value = 'Please sign in again before changing your password.'
+        } else if (e?.code === 'auth/too-many-requests') {
+            error.value = 'Too many attempts. Please try again later.'
+        } else {
+            error.value = 'Could not update password. Please try again.'
+        }
+        console.error('Failed to update Firebase password:', e)
+    } finally {
+        loading.value = false
+    }
 }
 </script>
 
@@ -63,6 +101,15 @@ function handleConfirm() {
         </div>
 
         <p class="cp-sub">Make sure to save your password in a password manager!</p>
+
+        <div class="cp-field">
+            <label class="cp-label">Current Password</label>
+            <div class="cp-input-wrap">
+                <input class="cp-input" :type="showCurrent ? 'text' : 'password'" v-model="currentPassword"
+                    placeholder="Enter current password" />
+                <button class="cp-eye-btn" @click="showCurrent = !showCurrent">{{ showCurrent ? '🙈' : '👁' }}</button>
+            </div>
+        </div>
 
         <div class="cp-field">
             <label class="cp-label">New Password</label>
@@ -91,7 +138,9 @@ function handleConfirm() {
         <p v-if="error" class="cp-error-msg">{{ error }}</p>
         <p v-if="success" class="cp-success-msg">Password updated!</p>
 
-        <button class="cp-confirm-btn" @click="handleConfirm">Confirm</button>
+        <button class="cp-confirm-btn" :disabled="loading" @click="handleConfirm">
+            {{ loading ? 'Updating...' : 'Confirm' }}
+        </button>
 
         <button class="cp-generate-link" @click="generatePassword">Generate a Secure Password for Me
             (recommended!)</button>
@@ -250,6 +299,11 @@ function handleConfirm() {
 
 .cp-confirm-btn:hover {
     background: #f0654f;
+}
+
+.cp-confirm-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .cp-generate-link {

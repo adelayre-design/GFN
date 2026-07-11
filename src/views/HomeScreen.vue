@@ -19,10 +19,6 @@
         <div class="stat-num">{{ store.routinesFinished }}</div>
         <div class="stat-lbl">Routines<br />Finished</div>
       </div>
-      <div class="stat-box">
-        <div class="stat-num">{{ store.dayStreak }}</div>
-        <div class="stat-lbl">Day<br />Streak</div>
-      </div>
     </div>
 
     <div class="section-label">Scheduled workout</div>
