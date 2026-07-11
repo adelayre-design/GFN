@@ -9,7 +9,7 @@
     <div class="progress-box">
       {{
         store.progressLog.length
-          ? store.progressLog.slice(-3).reverse().join('  •  ')
+          ? store.progressLog.slice(-3).reverse().join(' • ')
           : 'Log a routine to start tracking progress.'
       }}
     </div>
@@ -85,15 +85,18 @@ const loggedFood = computed(() => {
   gap: 8px;
   margin-bottom: 18px;
 }
+
 .home-header .logo-circle {
   width: 32px;
   height: 32px;
   margin: 0;
 }
+
 .home-header .logo-circle :deep(svg) {
   width: 16px;
   height: 16px;
 }
+
 .home-header .brand {
   font-size: 14px;
   text-align: left;
@@ -119,13 +122,24 @@ const loggedFood = computed(() => {
   padding: 14px;
   margin-bottom: 16px;
 }
+
 .wk-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
-.wk-name { font-weight: 700; font-size: 14px; }
-.wk-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+.wk-name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.wk-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
 .begin-btn {
   background: var(--red);
   color: white;
@@ -136,19 +150,27 @@ const loggedFood = computed(() => {
   padding: 7px 14px;
   cursor: pointer;
 }
-.begin-btn-finish { background: var(--green); }
+
+.begin-btn-finish {
+  background: var(--green);
+}
+
 .exercise-list {
   margin-top: 12px;
   border-top: 1px solid var(--border);
   padding-top: 10px;
 }
+
 .exercise-row {
   display: flex;
   justify-content: space-between;
   padding: 6px 0;
   font-size: 12px;
 }
-.exercise-sub { color: var(--muted); }
+
+.exercise-sub {
+  color: var(--muted);
+}
 
 .food-card {
   background: var(--card);
@@ -160,8 +182,19 @@ const loggedFood = computed(() => {
   align-items: center;
   margin-bottom: 90px;
 }
-.food-name { font-size: 13px; font-weight: 700; }
-.food-kcal { font-size: 11px; color: var(--red); font-weight: 700; }
 
-.spacer { flex: 1; }
+.food-name {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.food-kcal {
+  font-size: 11px;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.spacer {
+  flex: 1;
+}
 </style>
