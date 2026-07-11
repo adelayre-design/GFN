@@ -48,8 +48,6 @@ const password = ref('')
 const error = ref('')
 const loading = ref(false)
 
-// Firebase's own error codes are technical (e.g. "auth/wrong-password") —
-// translate the common ones into something a user can actually read.
 function friendlyError(code) {
   switch (code) {
     case 'auth/email-already-in-use':
