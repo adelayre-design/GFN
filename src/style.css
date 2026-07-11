@@ -1,0 +1,399 @@
+:root {
+  --bg: #17191f;
+  --card: #232630;
+  --card-2: #2a2e3a;
+  --border: #343844;
+  --red: #e5483d;
+  --red-dark: #c73c32;
+  --text: #f2f3f5;
+  --muted: #8b9099;
+  --muted-2: #5f636d;
+  --green: #4caf7d;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px 8px;
+}
+
+/* Phone frame shell that every screen renders inside */
+.phone {
+  width: 375px;
+  min-height: 720px;
+  background: var(--bg);
+  border-radius: 28px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Base layout every screen component uses */
+.screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 720px;
+  padding: 28px 22px 0 22px;
+  position: relative;
+}
+
+/* Logo + brand, reused on the landing and auth screens */
+.logo-wrap { text-align: center; margin-top: 40px; }
+.logo-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px auto;
+}
+.logo-circle svg { width: 26px; height: 26px; }
+.brand {
+  color: var(--red);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.tagline {
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* Shared button styles used across every screen */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 13px 0;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  letter-spacing: 0.5px;
+}
+.btn-red { background: var(--red); color: white; }
+.btn-red:hover { background: var(--red-dark); }
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* Input fields, used by the auth screen and future forms/modals */
+.field {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.field input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 13px;
+  width: 100%;
+}
+.field svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--muted); }
+
+/* Tab switcher, used by the auth screen's Log In / Register toggle */
+.tabs {
+  display: flex;
+  background: var(--card);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 18px;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 9px 0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--muted);
+}
+.tab.active { background: var(--card-2); color: var(--text); }
+
+/* Bottom navigation bar, shared by Home/Plans/Meals/Profile */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 0 16px 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  bottom: 0;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 600;
+  background: none;
+  border: none;
+}
+.nav-item svg { width: 19px; height: 19px; }
+.nav-item.active { color: var(--red); }
+
+/* Small uppercase section headers used on Home/Plans/Meals */
+.section-label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+/* Empty-state placeholder text */
+.empty-note {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.top-title { font-size: 20px; font-weight: 800; margin: 4px 0 4px 0; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 6px 0 16px 0; }
+
+.search-field {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.search-field svg { width: 14px; height: 14px; }
+.search-field input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  width: 100%;
+  font-size: 13px;
+}
+
+.list-scroll { flex: 1; overflow-y: auto; padding-bottom: 90px; }
+.list-scroll::-webkit-scrollbar { width: 0; }
+
+.item-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.item-left .item-name { font-size: 14px; font-weight: 700; }
+.item-left .item-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.item-right { display: flex; align-items: center; gap: 10px; }
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.icon-btn svg { width: 16px; height: 16px; }
+.icon-btn:hover { color: var(--text); }
+.icon-btn.danger:hover { color: var(--red); }
+
+.toggle {
+  width: 34px;
+  height: 19px;
+  border-radius: 12px;
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.toggle.on { background: var(--red); }
+.toggle .knob {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.15s ease;
+}
+.toggle.on .knob { left: 17px; }
+
+.fab {
+  position: absolute;
+  bottom: 84px;
+  right: 22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--red);
+  color: white;
+  border: none;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(229, 72, 61, 0.4);
+  z-index: 5;
+}
+
+.back-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+.back-row svg { width: 16px; height: 16px; }
+.back-row:hover { color: var(--text); }
+
+select.field-select {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12px;
+  width: 110px;
+}
+
+/* Modal overlay, shared by every Add/Edit form */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  padding: 20px;
+}
+.modal-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;
+  max-height: 640px;
+  overflow-y: auto;
+}
+.modal-title { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+.modal-actions { display: flex; gap: 8px; margin-top: 6px; }
+.modal-actions .btn { padding: 10px 0; font-size: 12px; }
+.draft-input {
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 9px;
+  color: var(--text);
+  font-size: 12px;
+  outline: none;
+  width: 100%;
+}
+
+/* Profile screen */
+.profile-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--card-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+}
+.avatar svg { width: 22px; height: 22px; }
+.profile-name { font-size: 16px; font-weight: 800; }
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.info-row .k { color: var(--muted); }
+.info-row .v { font-weight: 600; }
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.logout-row { color: var(--red); font-weight: 700; cursor: pointer; padding-top: 14px; font-size: 13px; }
+
+/* Stat boxes, used by Home (routines/streak) and Profile (stats summary) */
+.stat-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.stat-box {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 10px;
+  text-align: center;
+}
+.stat-num {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--red);
+}
+.stat-lbl {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+}
