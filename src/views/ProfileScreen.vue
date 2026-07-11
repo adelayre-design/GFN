@@ -51,18 +51,20 @@
 
     <template v-else>
       <div class="info-row"><span class="k">Age</span><span class="v">{{ store.user.age || '--' }}</span></div>
-      <div class="info-row"><span class="k">Weight</span><span class="v">{{ store.user.weight ? store.user.weight + ' kg' : '--' }}</span></div>
-      <div class="info-row"><span class="k">Height</span><span class="v">{{ store.user.height ? store.user.height + ' cm' : '--' }}</span></div>
+      <div class="info-row"><span class="k">Weight</span><span class="v">{{ store.user.weight ? store.user.weight + 'kg' : '--' }}</span></div>
+      <div class="info-row"><span class="k">Height</span><span class="v">{{ store.user.height ? store.user.height + 'cm' : '--' }}</span></div>
       <div class="info-row"><span class="k">Gender</span><span class="v">{{ store.user.gender || '--' }}</span></div>
       <div class="info-row"><span class="k">Goal</span><span class="v">{{ store.user.goal || '--' }}</span></div>
       <button class="btn btn-outline edit-btn" @click="isEditingStats = true">Edit</button>
     </template>
 
     <div class="section-label profile-settings-label">Settings</div>
-    <div class="settings-row"><span>Change password</span><span class="chev">›</span></div>
+    <div class="settings-row" @click="goTo('changePass')"><span>Change password</span><span class="chev">›</span></div>
     <div class="settings-row">
       <span>Notifications</span>
-      <div class="toggle" :class="{ on: store.notif }" @click="toggleNotif"><div class="knob"></div></div>
+      <div class="toggle" :class="{ on: store.notif }" @click="toggleNotif">
+        <div class="knob"></div>
+      </div>
     </div>
 
     <div class="logout-row" @click="logout()">Log Out</div>
@@ -73,7 +75,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { store, logout, saveData } from '../store.js'
+import { store, logout, saveData, goTo } from '../store.js'
 import { ICONS } from '../icons.js'
 import BottomNav from '../components/BottomNav.vue'
 
@@ -95,9 +97,27 @@ const totalCaloriesLogged = computed(() =>
 </script>
 
 <style scoped>
-.profile-settings-label { margin-top: 20px; }
-.chev { color: var(--muted); }
-.spacer { flex: 1; }
-.confirm-btn { margin-top: 4px; margin-bottom: 12px; }
-.edit-btn { margin-top: 8px; margin-bottom: 12px; padding: 9px 0; font-size: 12px; }
+.profile-settings-label {
+  margin-top: 20px;
+}
+
+.chev {
+  color: var(--muted);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.confirm-btn {
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.edit-btn {
+  margin-top: 8px;
+  margin-bottom: 12px;
+  padding: 9px 0;
+  font-size: 12px;
+}
 </style>

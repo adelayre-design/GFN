@@ -8,6 +8,7 @@
     <MealsScreen v-else-if="store.screen === 'meals'" />
     <MealDetailScreen v-else-if="store.screen === 'mealDetail'" />
     <ProfileScreen v-else-if="store.screen === 'profile'" />
+    <ChangePass v-else-if="store.screen === 'changePass'" />
     <ModalHost />
   </div>
 </template>
@@ -24,6 +25,7 @@ import PlanDetailScreen from './views/PlanDetailScreen.vue'
 import MealsScreen from './views/MealsScreen.vue'
 import MealDetailScreen from './views/MealDetailScreen.vue'
 import ProfileScreen from './views/ProfileScreen.vue'
+import ChangePass from './views/changePass.vue'
 import ModalHost from './views/ModalHost.vue'
 import { store, goTo, loadData } from './store.js'
 
