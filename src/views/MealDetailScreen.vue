@@ -9,11 +9,13 @@
       <div class="item-card" v-for="it in meal.items" :key="it.id">
         <div class="item-left">
           <div class="item-name">{{ it.name }}</div>
-          <div class="item-sub">{{ it.kcal }} kcal</div>
+          <div class="item-sub">{{ it.kcal }} kcal · {{ it.qty || 1 }} food{{ (it.qty || 1) === 1 ? '' : 's' }}</div>
         </div>
         <div class="item-right">
-          <button class="icon-btn" @click="openFoodItemModal(it.id)" title="Edit"><span v-html="ICONS.edit"></span></button>
-          <button class="icon-btn danger" @click="deleteFoodItem(it.id)" title="Delete"><span v-html="ICONS.trash"></span></button>
+          <button class="icon-btn" @click="openFoodItemModal(it.id)" title="Edit"><span
+              v-html="ICONS.edit"></span></button>
+          <button class="icon-btn danger" @click="deleteFoodItem(it.id)" title="Delete"><span
+              v-html="ICONS.trash"></span></button>
         </div>
       </div>
     </div>

@@ -17,9 +17,9 @@ export const store = reactive({
   },
 
   routinesFinished: 0,
+  mealsFinished: 0,
   progressLog: [],
   workoutInProgress: null,
-  units: "kg",
 
   planSearch: "",
   mealSearch: "",
@@ -66,8 +66,8 @@ function snapshotForSave() {
   return {
     user: store.user,
     routinesFinished: store.routinesFinished,
+    mealsFinished: store.mealsFinished,
     progressLog: store.progressLog,
-    units: store.units,
     nextPlanId: store.nextPlanId,
     nextMealId: store.nextMealId,
     plans: store.plans,
@@ -110,6 +110,14 @@ export function finishWorkout(planId) {
   store.routinesFinished += 1;
   store.progressLog.push(`Finished ${plan.name}`);
   store.workoutInProgress = null;
+  saveData();
+}
+
+export function finishMealLog(mealId) {
+  const meal = store.meals.find((m) => m.id === mealId);
+  if (!meal) return;
+  store.mealsFinished += 1;
+  store.progressLog.push(`Finished meal ${meal.name}`);
   saveData();
 }
 
@@ -241,6 +249,7 @@ export function saveMealDraft() {
       id: i.id,
       name: String(i.name).trim(),
       kcal: parseInt(i.kcal) || 0,
+      qty: Math.max(1, parseInt(i.qty) || 1),
     }))
     .filter((i) => i.name);
   if (d.id != null) {
@@ -266,8 +275,13 @@ export function openFoodItemModal(itemId) {
   const src =
     itemId != null
       ? meal.items.find((i) => i.id === itemId)
-      : { name: "", kcal: "" };
-  store.foodItemDraft = { id: itemId ?? null, name: src.name, kcal: src.kcal };
+      : { name: "", kcal: "", qty: 1 };
+  store.foodItemDraft = {
+    id: itemId ?? null,
+    name: src.name,
+    kcal: src.kcal,
+    qty: src.qty ?? 1,
+  };
   store.modal = "foodItem";
 }
 export function saveFoodItemDraft() {
@@ -276,15 +290,17 @@ export function saveFoodItemDraft() {
   const name = String(d.name).trim();
   if (!name) return;
   const kcal = parseInt(d.kcal) || 0;
+  const qty = Math.max(1, parseInt(d.qty) || 1);
   if (d.id != null) {
     const item = meal.items.find((i) => i.id === d.id);
     item.name = name;
     item.kcal = kcal;
+    item.qty = qty;
   } else {
     const nextId = meal.items.length
       ? Math.max(...meal.items.map((i) => i.id)) + 1
       : 1;
-    meal.items.push({ id: nextId, name, kcal });
+    meal.items.push({ id: nextId, name, kcal, qty });
   }
   saveData();
   closeModal();

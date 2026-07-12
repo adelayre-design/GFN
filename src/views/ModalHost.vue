@@ -21,7 +21,8 @@
             </button>
           </div>
         </div>
-        <button class="btn btn-outline add-row-btn" @click="store.planDraft.exercises.push({ id: Date.now(), name: '', sub: '' })">
+        <button class="btn btn-outline add-row-btn"
+          @click="store.planDraft.exercises.push({ id: Date.now(), name: '', sub: '' })">
           + Add exercise
         </button>
 
@@ -54,6 +55,13 @@
           <div class="item-card draft-row" v-for="(it, idx) in store.mealDraft.items" :key="it.id">
             <div class="draft-fields">
               <input class="draft-input" v-model="it.name" placeholder="Food name" />
+              <div class="qty-row">
+                <button class="qty-btn" type="button" @click="it.qty = Math.max(1, (Number(it.qty) || 1) - 1)"><i
+                    class="fa-solid fa-minus"></i></button>
+                <button class="qty-btn" type="button" @click="it.qty = Math.max(1, (Number(it.qty) || 1) + 1)"><i
+                    class="fa-solid fa-plus"></i></button>
+                <span class="qty-total">Total foods: {{ Number(it.qty) || 1 }}</span>
+              </div>
               <input class="draft-input" v-model="it.kcal" placeholder="Calories (kcal)" />
             </div>
             <button class="icon-btn danger" @click="store.mealDraft.items.splice(idx, 1)">
@@ -61,7 +69,8 @@
             </button>
           </div>
         </div>
-        <button class="btn btn-outline add-row-btn" @click="store.mealDraft.items.push({ id: Date.now(), name: '', kcal: '' })">
+        <button class="btn btn-outline add-row-btn"
+          @click="store.mealDraft.items.push({ id: Date.now(), name: '', kcal: '', qty: 1 })">
           + Add food item
         </button>
 
@@ -75,6 +84,17 @@
       <template v-if="store.modal === 'foodItem'">
         <div class="modal-title">{{ store.foodItemDraft.id ? 'Edit' : 'New' }} Food Item</div>
         <div class="field"><input v-model="store.foodItemDraft.name" placeholder="Food name" /></div>
+        <div class="field qty-field">
+          <div class="qty-row">
+            <button class="qty-btn" type="button"
+              @click="store.foodItemDraft.qty = Math.max(1, (Number(store.foodItemDraft.qty) || 1) - 1)"><i
+                class="fa-solid fa-minus"></i></button>
+            <button class="qty-btn" type="button"
+              @click="store.foodItemDraft.qty = Math.max(1, (Number(store.foodItemDraft.qty) || 1) + 1)"><i
+                class="fa-solid fa-plus"></i></button>
+            <span class="qty-total">Total foods: {{ Number(store.foodItemDraft.qty) || 1 }}</span>
+          </div>
+        </div>
         <div class="field"><input v-model="store.foodItemDraft.kcal" placeholder="Calories (kcal)" /></div>
         <div class="modal-actions">
           <button class="btn btn-outline" @click="closeModal()">Cancel</button>
@@ -99,9 +119,57 @@ import { ICONS } from '../icons.js'
 </script>
 
 <style scoped>
-.draft-label { margin-top: 6px; }
-.draft-list { max-height: 220px; overflow-y: auto; margin-bottom: 10px; }
-.draft-row { align-items: flex-start; }
-.draft-fields { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-.add-row-btn { padding: 9px 0; font-size: 12px; margin-bottom: 12px; }
+.draft-label {
+  margin-top: 6px;
+}
+
+.draft-list {
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.draft-row {
+  align-items: flex-start;
+}
+
+.draft-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.qty-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.qty-btn i {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.qty-total {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.add-row-btn {
+  padding: 9px 0;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
 </style>

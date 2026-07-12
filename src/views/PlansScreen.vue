@@ -3,14 +3,6 @@
     <div class="top-title">Workout Plans</div>
     <hr class="divider" />
 
-    <div class="units-row">
-      <span class="units-label">Units</span>
-      <select class="field-select" v-model="store.units">
-        <option value="kg">kg</option>
-        <option value="lbs">lbs</option>
-      </select>
-    </div>
-
     <div class="search-field">
       <span v-html="ICONS.search"></span>
       <input v-model="store.planSearch" placeholder="Search Plans" />
@@ -24,9 +16,12 @@
           <div class="item-sub">{{ p.schedule }}</div>
         </div>
         <div class="item-right">
-          <div class="toggle" :class="{ on: p.active }" @click="setActivePlan(p.id)"><div class="knob"></div></div>
+          <div class="toggle" :class="{ on: p.active }" @click="setActivePlan(p.id)">
+            <div class="knob"></div>
+          </div>
           <button class="icon-btn" @click="openPlanModal(p.id)" title="Edit"><span v-html="ICONS.edit"></span></button>
-          <button class="icon-btn danger" @click="deletePlan(p.id)" title="Delete"><span v-html="ICONS.trash"></span></button>
+          <button class="icon-btn danger" @click="deletePlan(p.id)" title="Delete"><span
+              v-html="ICONS.trash"></span></button>
         </div>
       </div>
     </div>
@@ -47,13 +42,3 @@ const filteredPlans = computed(() => {
   return store.plans.filter((p) => p.name.toLowerCase().includes(q))
 })
 </script>
-
-<style scoped>
-.units-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-.units-label { font-size: 12px; color: var(--muted); font-weight: 600; }
-</style>
