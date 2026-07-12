@@ -3,7 +3,6 @@
     <div class="home-header">
       <div class="logo-circle" v-html="ICONS.logo"></div>
       <div class="brand">GYMFIT NOTES</div>
-      <p>test</p>
     </div>
 
     <div class="section-label">Progress made</div>
