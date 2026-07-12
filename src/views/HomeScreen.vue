@@ -161,18 +161,18 @@ const showFoodLog = ref(false)
 }
 
 .begin-btn {
-  background: var(--red);
+  background: transparent;
   color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 7px 14px;
+  border: 1px solid #cfcfcf;
+  border-radius: 0;
+  font-size: 12px;
+  padding: 10px 22px;
   cursor: pointer;
 }
 
 .begin-btn-finish {
-  background: var(--green);
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .exercise-list {

@@ -15,7 +15,7 @@
         <div class="stat-lbl">Workouts<br />Finished</div>
       </div>
       <div class="stat-box">
-        <div class="stat-num">{{ totalCaloriesLogged }}</div>
+        <div class="stat-num">{{ store.caloriesLogged }}</div>
         <div class="stat-lbl">Calories<br />Logged</div>
       </div>
     </div>
@@ -47,8 +47,10 @@
 
     <template v-else>
       <div class="info-row"><span class="k">Age</span><span class="v">{{ store.user.age || '--' }}</span></div>
-      <div class="info-row"><span class="k">Weight</span><span class="v">{{ store.user.weight ? store.user.weight + 'kg' : '--' }}</span></div>
-      <div class="info-row"><span class="k">Height</span><span class="v">{{ store.user.height ? store.user.height + 'cm' : '--' }}</span></div>
+      <div class="info-row"><span class="k">Weight</span><span class="v">{{ store.user.weight ? store.user.weight + 'kg'
+        : '--' }}</span></div>
+      <div class="info-row"><span class="k">Height</span><span class="v">{{ store.user.height ? store.user.height + 'cm'
+        : '--' }}</span></div>
       <div class="info-row"><span class="k">Gender</span><span class="v">{{ store.user.gender || '--' }}</span></div>
       <div class="info-row"><span class="k">Goal</span><span class="v">{{ store.user.goal || '--' }}</span></div>
       <button class="btn btn-outline edit-btn" @click="isEditingStats = true">Edit</button>
@@ -64,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { store, logout, saveData, goTo } from '../store.js'
 import { ICONS } from '../icons.js'
 import BottomNav from '../components/BottomNav.vue'
@@ -75,10 +77,6 @@ function confirmStats() {
   isEditingStats.value = false
   saveData()
 }
-
-const totalCaloriesLogged = computed(() =>
-  store.meals.reduce((sum, meal) => sum + meal.items.reduce((s, item) => s + (item.kcal || 0), 0), 0)
-)
 </script>
 
 <style scoped>

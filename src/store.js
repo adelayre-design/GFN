@@ -18,6 +18,8 @@ export const store = reactive({
 
   routinesFinished: 0,
   mealsFinished: 0,
+  caloriesLogged: 0,
+  lastStatsResetAt: Date.now(),
   progressLog: [],
   workoutInProgress: null,
 
@@ -67,12 +69,31 @@ function snapshotForSave() {
     user: store.user,
     routinesFinished: store.routinesFinished,
     mealsFinished: store.mealsFinished,
+    caloriesLogged: store.caloriesLogged,
+    lastStatsResetAt: store.lastStatsResetAt,
     progressLog: store.progressLog,
     nextPlanId: store.nextPlanId,
     nextMealId: store.nextMealId,
     plans: store.plans,
     meals: store.meals,
   };
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function resetDailyStats() {
+  store.routinesFinished = 0;
+  store.mealsFinished = 0;
+  store.caloriesLogged = 0;
+  store.lastStatsResetAt = Date.now();
+}
+
+function ensureDailyStatsCurrent() {
+  const last = Number(store.lastStatsResetAt || 0);
+  if (!last || Date.now() - last >= DAY_MS) {
+    resetDailyStats();
+    saveData();
+  }
 }
 
 let saveTimer = null;
@@ -92,7 +113,11 @@ export async function loadData(uid) {
   const snap = await getDoc(doc(db, "users", uid));
   if (snap.exists()) {
     Object.assign(store, snap.data());
+    if (typeof store.caloriesLogged !== "number") store.caloriesLogged = 0;
+    if (!store.lastStatsResetAt) store.lastStatsResetAt = Date.now();
+    ensureDailyStatsCurrent();
   } else {
+    resetDailyStats();
     saveData();
   }
 }
@@ -105,6 +130,7 @@ export function beginWorkout(planId) {
   store.workoutInProgress = planId;
 }
 export function finishWorkout(planId) {
+  ensureDailyStatsCurrent();
   const plan = store.plans.find((p) => p.id === planId);
   if (!plan) return;
   store.routinesFinished += 1;
@@ -114,12 +140,23 @@ export function finishWorkout(planId) {
 }
 
 export function finishMealLog(mealId) {
+  ensureDailyStatsCurrent();
   const meal = store.meals.find((m) => m.id === mealId);
   if (!meal) return;
+  const mealCalories = meal.items.reduce(
+    (sum, item) => sum + (Number(item.kcal) || 0) * (Number(item.qty) || 1),
+    0,
+  );
   store.mealsFinished += 1;
+  store.caloriesLogged += mealCalories;
   store.progressLog.push(`Finished meal ${meal.name}`);
   saveData();
 }
+
+setInterval(() => {
+  if (!store.uid) return;
+  ensureDailyStatsCurrent();
+}, 60 * 1000);
 
 export function setActivePlan(id) {
   store.plans.forEach((p) => (p.active = p.id === id ? !p.active : false));
